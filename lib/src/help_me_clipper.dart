@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'guide.dart';
 
-class HelpMeClipper extends CustomPainter {
+class HelpMePainter extends CustomPainter {
   GlobalKey key;
   RenderBox box;
   HelpMeShape shape;
-  HelpMeClipper(this.key, this.box, {required this.shape});
+  HelpMePainter(this.key, this.box, {required this.shape});
   @override
   void paint(Canvas canvas, Size size) {
     // Path path0 = Path();
@@ -52,6 +52,46 @@ class HelpMeClipper extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class HelpMeClipper extends CustomClipper<Path> {
+  GlobalKey key;
+  RenderBox box;
+  HelpMeShape shape;
+  HelpMeClipper(this.key, this.box, {required this.shape});
+  @override
+  Path getClip(Size size) {
+    var size2 = box.size;
+
+    Path path0;
+    if (shape is HelpMeCustomShape) {
+      path0 = (shape as HelpMeCustomShape).path;
+    } else if (shape is HelpMeOvalShape) {
+      path0 = Path()
+        ..addOval(Rect.fromLTWH(box.paintBounds.left, box.paintBounds.top,
+            box.paintBounds.width, box.paintBounds.height));
+    } else if (shape is HelpMeRectShape) {
+      path0 = Path()
+        ..addRRect(RRect.fromRectAndCorners(box.paintBounds,
+            bottomLeft: (shape as HelpMeRectShape).borderRadius.bottomLeft,
+            bottomRight: (shape as HelpMeRectShape).borderRadius.bottomRight,
+            topLeft: (shape as HelpMeRectShape).borderRadius.topLeft,
+            topRight: (shape as HelpMeRectShape).borderRadius.topRight));
+    } else {
+      path0 = Path()..addRRect(RRect.fromRectAndCorners(box.paintBounds));
+    }
+    var path = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..addPath(path0, box.localToGlobal(Offset.zero))
+      // ..addOval(Rect.fromCircle(center: position, radius: 40))
+      ..fillType = PathFillType.evenOdd;
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return true;
   }
 }

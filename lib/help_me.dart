@@ -9,6 +9,8 @@ class HelpMe {
       {required List<HelpMeItem> items,
       required BuildContext pageContext,
       required Widget nextWidget,
+      Color? color,
+      Gradient? gradient,
       required Widget skipWidget}) {
     showModalBottomSheet(
         elevation: 0,
@@ -21,6 +23,8 @@ class HelpMe {
             nextButton: nextWidget,
             skipButton: skipWidget,
             guides: items,
+            gradient: gradient,
+            color: color,
             pageContext: pageContext,
           );
         });

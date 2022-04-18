@@ -10,13 +10,17 @@ class Help extends StatefulWidget {
   BuildContext pageContext;
   Widget? nextButton;
   Widget? skipButton;
+  final Color? color;
+  final Gradient? gradient;
 
   Help(
       {Key? key,
       required this.guides,
       required this.pageContext,
       this.nextButton,
-      this.skipButton})
+      this.skipButton,
+      this.color,
+      this.gradient})
       : super(key: key) {
     size = Size(MediaQuery.of(pageContext).size.width,
         MediaQuery.of(pageContext).size.height);
@@ -199,25 +203,6 @@ class _HelpState extends State<Help> {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.nextButton != null && nextButtonBox == null) {
-    //   print("renderBox");
-    //   var w1 = WidgetSize(
-    //       onChange: (RenderBox renderBox) {
-    //         print("renderBox");
-    //       },
-    //       child: widget.nextButton!);
-    // }
-    // if (widget.nextButton != null && nextButtonKey == null) {
-    //   nextButtonKey = GlobalKey();
-    //   widget.nextButton =
-    //       Container(child: widget.nextButton, key: nextButtonKey);
-    // }
-    // if (widget.skipButton != null && skipButtonKey == null) {
-    //   skipButtonKey = GlobalKey();
-    //   widget.skipButton =
-    //       Container(child: widget.skipButton, key: skipButtonKey);
-    // }
-
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -227,9 +212,6 @@ class _HelpState extends State<Help> {
             duration: Duration(milliseconds: 200),
             child: Builder(builder: (context) {
               if (widget.size != null) {
-                print(currentPosition.dy);
-                print((widget.size!.height / 2));
-
                 if (currentPosition.dy < 0 ||
                     currentPosition.dy > widget.size!.height) {
                   isShowing = false;
@@ -247,11 +229,23 @@ class _HelpState extends State<Help> {
                         duration: Duration(milliseconds: 300),
                         child: CustomPaint(
                           key: ValueKey(widget.guides[selected].key.hashCode),
-                          painter: HelpMeClipper(
+                          painter: HelpMePainter(
                               widget.guides[selected].key, currentBox!,
                               shape: widget.guides[selected].shape),
-                          child: Container(
-                            color: Colors.black.withOpacity(0.01),
+                          child: ClipPath(
+                            clipper: HelpMeClipper(
+                                widget.guides[selected].key, currentBox!,
+                                shape: widget.guides[selected].shape),
+                            key: ValueKey(
+                                widget.guides[selected].key.hashCode + 1),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: widget.gradient == null
+                                      ? (widget.color ??
+                                          Colors.black.withOpacity(0.01))
+                                      : null,
+                                  gradient: widget.gradient),
+                            ),
                           ),
                         ),
                       ),

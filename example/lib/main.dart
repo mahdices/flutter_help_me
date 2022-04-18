@@ -12,21 +12,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -37,15 +27,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -53,21 +34,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  GlobalKey textKeyHello = GlobalKey();
-  GlobalKey textKeyArrow = GlobalKey();
-  GlobalKey textKeyHeadphone = GlobalKey();
-  GlobalKey textKeyList = GlobalKey();
-  GlobalKey textKeyButton = GlobalKey();
-  ScrollController scrollController = ScrollController();
-
-  // var custom = CustomPaint(
-  //   key: textKey22,
-  //   // size: Size(300,
-  //   //     300), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-  //   painter: RPSCustomPainter(),
-  // );
+  GlobalKey keyHello = GlobalKey();
+  GlobalKey keyArrow = GlobalKey();
+  GlobalKey keyHeadphone = GlobalKey();
+  GlobalKey keyList = GlobalKey();
+  GlobalKey keyButton = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 24,
                 ),
                 Container(
-                  key: textKeyHello,
+                  key: keyHello,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -107,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   height: 32,
                 ),
-                Icon(Icons.arrow_downward_rounded, key: textKeyArrow),
+                Icon(Icons.arrow_downward_rounded, key: keyArrow),
                 SizedBox(
                   height: 32,
                 ),
@@ -121,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 100,
                     height: 100,
                     child: CustomPaint(
-                      key: textKeyHeadphone,
+                      key: keyHeadphone,
 
                       // size: Size(50,
                       //     70), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
@@ -140,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
           SliverList(
               delegate: SliverChildBuilderDelegate((_, index) {
             return Card(
-              key: index == 7 ? textKeyList : null,
+              key: index == 5 ? keyList : null,
               elevation: 10,
               color: Color.fromARGB(255, 58, 116, (index * 100) + 40),
               margin:
@@ -154,14 +125,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        key: textKeyButton,
+        key: keyButton,
         onPressed: () async {
           var currentBox =
-              textKeyHeadphone.currentContext!.findRenderObject() as RenderBox;
+              keyHeadphone.currentContext!.findRenderObject() as RenderBox;
           HelpMe.showHelp(
+              gradient: LinearGradient(colors: [
+                Colors.blue.withOpacity(0.2),
+                Colors.purple.withOpacity(0.2),
+              ]),
               items: [
                 HelpMeItem(
-                    key: textKeyButton,
+                    key: keyButton,
                     shape: const HelpMeRectShape(
                         borderRadius: BorderRadius.all(Radius.circular(24))),
                     // shape:
@@ -174,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 HelpMeItem(
-                    key: textKeyHello,
+                    key: keyHello,
                     shape: const HelpMeRectShape(
                         borderRadius: BorderRadius.all(Radius.circular(6))),
                     // shape:
@@ -187,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 HelpMeItem(
-                    key: textKeyArrow,
+                    key: keyArrow,
                     shape: HelpMeOvalShape(color: Colors.red, width: 8),
                     guideWidget: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -206,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 HelpMeItem(
-                    key: textKeyHeadphone,
+                    key: keyHeadphone,
                     shape: HelpMeCustomShape(path: getPath2(currentBox.size)),
                     guideWidget: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -216,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 HelpMeItem(
-                    key: textKeyList,
+                    key: keyList,
                     shape: HelpMeRectShape(),
                     guideWidget: Padding(
                       padding: const EdgeInsets.all(16.0),
